@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Business + Website Audit</title>
+<style>
+  :root{
+    --navy:#1F2A5C;
+    --purple:#5B3E8E;
+    --violet:#7C5CB8;
+    --gold:#B8933E;
+    --gold-light:#C9A227;
+    --cream:#FDF8EE;
+    --lavender:#F0EAFA;
+    --ink:#2B2B2B;
+    --soft:#6B6B7A;
+    --bg:#FFFFFF;
+    --line:#E9E2D2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:Arial, Helvetica, sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px 60px;}
+
+  header{padding:36px 0 20px;text-align:center;}
+  .brand{font-size:13px;letter-spacing:5px;color:var(--gold);font-weight:bold;}
+  .tagline{font-size:12px;color:var(--violet);font-style:italic;margin-top:2px;}
+  h1{font-size:30px;color:var(--navy);margin-top:16px;line-height:1.25;}
+  .sub{color:var(--purple);font-size:16px;margin-top:6px;}
+  .meta{color:var(--soft);font-size:13px;margin-top:4px;}
+
+  .design-line{background:var(--cream);border:1.5px solid var(--gold);border-radius:10px;padding:14px 18px;margin:22px 0 6px;font-size:14.5px;text-align:left;}
+  .design-line strong{color:var(--navy);}
+
+  .tabs{display:flex;gap:8px;margin:26px 0 0;border-bottom:2px solid var(--line);flex-wrap:wrap;}
+  .tab{border:none;background:none;font-family:inherit;font-size:15px;font-weight:bold;color:var(--soft);
+    padding:12px 18px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .15s;}
+  .tab:hover{color:var(--purple);}
+  .tab.active{color:var(--navy);border-bottom-color:var(--gold);}
+  .tab:focus-visible{outline:2px solid var(--violet);outline-offset:2px;border-radius:4px;}
+
+  .panel{display:none;padding-top:26px;animation:fade .25s ease;}
+  .panel.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion: reduce){.panel{animation:none;}}
+
+  h2{font-size:21px;color:var(--navy);margin:30px 0 6px;}
+  h2:first-child{margin-top:0;}
+  h2 .rule{display:block;width:52px;height:3px;background:var(--gold);border-radius:2px;margin-top:6px;}
+  .lede{color:var(--soft);font-size:14.5px;margin-bottom:16px;}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+  @media(max-width:640px){.grid{grid-template-columns:1fr;}}
+
+  .card{background:var(--cream);border:1.5px solid var(--gold);border-radius:10px;padding:16px 18px;}
+  .card h3{font-size:15px;color:var(--navy);margin-bottom:6px;}
+  .card p{font-size:14px;}
+
+  .gap{background:#fff;border:1.5px solid var(--line);border-left:5px solid var(--violet);border-radius:8px;padding:16px 18px;margin:12px 0;}
+  .gap .tag{display:inline-block;font-size:11px;font-weight:bold;letter-spacing:1px;color:#fff;background:var(--violet);border-radius:20px;padding:3px 12px;margin-bottom:8px;}
+  .gap.critical .tag{background:var(--purple);}
+  .gap.critical{border-left-color:var(--purple);}
+  .gap.resolved{border-left-color:var(--gold);opacity:.92;}
+  .gap.resolved .tag{background:var(--gold);}
+  .gap h3{font-size:16px;color:var(--navy);margin-bottom:5px;}
+  .gap p{font-size:14px;}
+
+  .quote{background:var(--lavender);border-left:4px solid var(--violet);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0;font-style:italic;color:var(--purple);font-size:14.5px;}
+  .quote .who{display:block;font-style:normal;font-size:12.5px;color:var(--violet);margin-top:6px;}
+
+  .page-audit{border:1.5px solid var(--line);border-radius:10px;margin:12px 0;overflow:hidden;}
+  .page-audit .head{background:var(--cream);border-bottom:1.5px solid var(--gold);padding:10px 18px;font-weight:bold;color:var(--navy);font-size:15px;}
+  .page-audit ul{list-style:none;padding:12px 18px;}
+  .page-audit li{font-size:14px;padding:5px 0 5px 22px;position:relative;}
+  .page-audit li::before{content:"";position:absolute;left:2px;top:13px;width:8px;height:8px;border-radius:50%;}
+  .page-audit li.good::before{background:var(--gold);}
+  .page-audit li.fix::before{background:var(--violet);}
+  .page-audit li strong{color:var(--navy);}
+  .legend{font-size:12.5px;color:var(--soft);margin:6px 0 2px;}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin:0 5px 0 12px;}
+  .dot.g{background:var(--gold);}
+  .dot.v{background:var(--violet);}
+
+  .fix{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0;}
+  .fix .num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;
+    background:var(--navy);color:#fff;font-weight:bold;font-size:13px;margin-right:10px;flex-shrink:0;}
+  .fix .fhead{display:flex;align-items:center;margin-bottom:8px;}
+  .fix h3{font-size:16px;color:var(--navy);}
+  .fix p{font-size:14px;margin-bottom:8px;}
+  .fix p:last-child{margin-bottom:0;}
+  .fix .why{background:var(--lavender);border-radius:6px;padding:8px 12px;font-size:13px;color:var(--purple);}
+  .fix .why strong{color:var(--purple);}
+  .fix .ask{background:var(--cream);border:1px dashed var(--gold);border-radius:6px;padding:8px 12px;font-size:13px;color:var(--ink);margin-bottom:8px;}
+  .fix .ask strong{color:var(--gold);letter-spacing:1px;font-size:11px;}
+
+  .ladder{margin:16px 0;}
+  .rung{display:flex;align-items:center;gap:12px;margin:8px 0;}
+  .rung .bar{background:var(--cream);border:1.5px solid var(--gold);border-radius:8px;padding:9px 14px;font-size:13.5px;flex-shrink:0;}
+  .rung .bar strong{color:var(--navy);}
+  .rung .note{font-size:12.5px;color:var(--soft);}
+  .rung.missing .bar{background:var(--lavender);border-color:var(--violet);border-style:dashed;}
+  .rung.missing .bar strong{color:var(--purple);}
+
+  .phase{border:1.5px solid var(--gold);border-radius:12px;margin:16px 0;overflow:hidden;}
+  .phase .phead{background:var(--cream);padding:14px 20px;border-bottom:1.5px solid var(--gold);}
+  .phase .phead .plabel{font-size:11px;font-weight:bold;letter-spacing:2px;color:var(--gold);}
+  .phase .phead h3{font-size:18px;color:var(--navy);margin-top:2px;}
+  .phase .phead .goal{font-size:13.5px;color:var(--purple);margin-top:2px;}
+  .month{padding:14px 20px;border-bottom:1px solid var(--line);}
+  .month:last-child{border-bottom:none;}
+  .month h4{font-size:14px;color:var(--purple);margin-bottom:6px;}
+  .month ul{list-style:none;}
+  .month li{font-size:14px;padding:4px 0 4px 20px;position:relative;}
+  .month li::before{content:"";position:absolute;left:2px;top:12px;width:7px;height:7px;border-radius:50%;background:var(--gold);}
+  .month li strong{color:var(--navy);}
+
+  .milestone{background:var(--lavender);border-radius:8px;padding:12px 16px;margin:0 20px 16px;font-size:13.5px;color:var(--purple);}
+  .milestone strong{color:var(--purple);}
+
+  .cta{background:var(--cream);border:2px solid var(--gold);border-radius:12px;padding:24px;text-align:center;margin:36px 0 10px;}
+  .cta h3{color:var(--navy);font-size:18px;margin-bottom:8px;}
+  .cta p{font-size:14px;color:var(--soft);}
+
+  footer{text-align:center;font-size:12px;color:var(--soft);padding:20px 0 10px;}
+  footer .g{color:var(--gold);font-weight:bold;letter-spacing:3px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">AURAILIA</div>
+    <div class="tagline">Tech + Frequency, Strategy + Soul</div>
+    <h1>Your Business + Website Audit</h1>
+    <div class="sub">Live Love Life Now &middot; Updated after our 1:1 Strategy Audit Call</div>
+    <div class="meta">livelovelifenow.com &nbsp;|&nbsp; August 2026</div>
+    <div class="design-line">
+      <strong>Your design in one line:</strong> you're a Projector who runs on invitation, not force, and your 4th line means real growth comes through relationships and community, not cold outreach. Everything below is built around that, and around the niche we landed on together.
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" role="tab" onclick="show(0,this)">Where Things Stand</button>
+    <button class="tab" role="tab" onclick="show(1,this)">The Fixes</button>
+    <button class="tab" role="tab" onclick="show(2,this)">3 + 6 Month Plan</button>
+  </div>
+
+  <!-- ============ TAB 1: CURRENT STATE ============ -->
+  <section class="panel active">
+
+    <h2>Your Niche, Now Confirmed<span class="rule"></span></h2>
+    <div class="quote">
+      "The thing that lights me up the most, and even what I realized I shared the most about right now, is around communication and relationships."
+      <span class="who">You, on our call</span>
+    </div>
+    <p class="lede">Here's the sentence everything in this audit is now built on: <strong>you help women in long-term relationships come back to themselves, get excited about their own life again, and learn to say what they mean so their partner can actually hear it.</strong> Not divorce coaching. Not office communication skills. The woman who loves her husband, cannot figure out why every conversation goes sideways, and quietly can't remember the last time she felt like herself. Your own thirty years, twenty of them hard, is exactly why she'll trust you.</p>
+
+    <h2>What Is Working<span class="rule"></span></h2>
+    <div class="grid">
+      <div class="card"><h3>Your voice is real</h3><p>Your site sounds like a warm, funny human, not a template. This is your biggest brand asset and nothing in this audit should sand it off.</p></div>
+      <div class="card"><h3>42 podcast episodes</h3><p>A genuine body of work, and proof your guesting strategy already works. Two organic invitations (your own podcast offer, a second episode with Megan) landed from just three recordings.</p></div>
+      <div class="card"><h3>Community is a proven strategy, just not built for you yet</h3><p>Aurailia's own membership community drove 90 percent of her coaching clients, which is why community is the recommendation for you too. Not a copy of that community, a version built around your energy and this niche.</p></div>
+      <div class="card"><h3>A spiritual voice worth using</h3><p>Your intuitive gifts and the language of challenges as invitations from the universe, instead of "getting unstuck," is a real point of difference once it's woven into the brand deliberately.</p></div>
+    </div>
+
+    <h2>The Ecosystem: How It All Connects<span class="rule"></span></h2>
+    <p class="lede">Here is the exact path a stranger takes to becoming a high-ticket client, the way we mapped it out. Solid boxes exist today. Dashed boxes are missing.</p>
+    <div class="ladder">
+      <div class="rung"><div class="bar"><strong>Podcast guesting</strong> (3 recordings, already generating invitations)</div><div class="note">Working, but currently points nowhere. It should point straight to the community</div></div>
+      <div class="rung missing"><div class="bar"><strong>Audio series activation</strong> (low-ticket purchase)</div><div class="note">Does not exist. This is the front door to everything else</div></div>
+      <div class="rung missing"><div class="bar"><strong>Free community access</strong> (unlocked by the audio series, hosted on Wix)</div><div class="note">Does not exist. Where every buyer lands after their first purchase</div></div>
+      <div class="rung missing"><div class="bar"><strong>Paid community tier</strong> ($33/month, unlocked at 50 members: group coaching calls, tool library)</div><div class="note">Opens once the free tier proves itself</div></div>
+      <div class="rung missing"><div class="bar"><strong>Low-ticket paid session</strong> ($44 to $57, sold inside the community)</div><div class="note">Does not exist. This is where the high-ticket sale actually happens</div></div>
+      <div class="rung missing"><div class="bar"><strong>Signature high-ticket container</strong> (1-month or 3-month, your Work With Me offer)</div><div class="note">Never built or named. This is the destination the whole path leads to</div></div>
+    </div>
+    <p class="lede">The quiz sits outside this path for now. It gets rebuilt around the new niche and can feed into the audio series once the funnel above exists.</p>
+
+    <h2>The Gaps, Ranked by Cost<span class="rule"></span></h2>
+
+    <div class="gap resolved">
+      <span class="tag">Resolved on our call</span>
+      <h3>Your niche was the biggest gap. It's closed now.</h3>
+      <p>Everything that used to say "sensitive, overthinking women who feel stuck" now has a real answer: women in long-term relationships who've lost themselves and can't get through a conversation without it going sideways. Every fix below exists to carry that one sentence through your entire business.</p>
+    </div>
+    <div class="gap critical">
+      <span class="tag">Gap 1 &middot; The whole funnel runs through this</span>
+      <h3>There's no low-ticket offer pulling people into a community</h3>
+      <p>Right now, nobody who discovers you has a cheap, easy first purchase that also gets them somewhere ongoing. The audio series activation fixes this in one move: she buys it, and that purchase drops her straight into your free community. One product does two jobs.</p>
+    </div>
+    <div class="gap critical">
+      <span class="tag">Gap 2 &middot; Where the real revenue lives</span>
+      <h3>There's no community for the high-ticket sale to happen inside</h3>
+      <p>Your free 60-minute session is currently the only path to paid work, and it happens with total strangers. In the model we mapped out, the sale happens differently: she's already inside your community, she already trusts you, and then the low-ticket paid session sells her into the signature container. That's a much warmer sale than anything happening on the website today.</p>
+    </div>
+    <div class="gap">
+      <span class="tag">Gap 3</span>
+      <h3>The signature container isn't built or named</h3>
+      <p>A 1-month or 3-month high-ticket offer is the destination of this whole path, and it doesn't exist yet, not named, not structured, not priced.</p>
+    </div>
+    <div class="gap">
+      <span class="tag">Gap 4</span>
+      <h3>The site doesn't sound like you, and doesn't speak to her</h3>
+      <p>The current Wix site feels templated rather than personal, and the copy is general enough to apply to almost any coach. Once the niche is the frame, the "Playful Coaching Session" CTA, the generic hero copy, and the missing personal photos and video all need a rebuild through that lens.</p>
+    </div>
+    <div class="gap">
+      <span class="tag">Gap 5</span>
+      <h3>Podcast guesting has nowhere to send people</h3>
+      <p>Your guesting strategy already works, three recordings have generated real invitations. But right now those appearances don't point anywhere specific. Once the community exists, every appearance gets one clear destination: come join the community, not a vague "check out my website."</p>
+    </div>
+    <div class="gap">
+      <span class="tag">Gap 6</span>
+      <h3>Tools are scattered</h3>
+      <p>Wix already has booking, courses, email marketing, and automation built in. There's no need for Calendly or a separate CRM once these are set up properly, but right now none of it is connected.</p>
+    </div>
+
+  </section>
+
+  <!-- ============ TAB 2: THE FIXES ============ -->
+  <section class="panel">
+
+    <p class="lede">Nine fixes, in the order to build them. Each one is a link in one connected chain: a low-ticket offer that pulls people into a free community, a paid tier once it's proven itself, and a warm path from there into your signature high-ticket container. Every piece is built around the woman we defined together: in a long-term relationship, has lost herself, wants to be heard by her partner again.</p>
+
+    <div class="fix">
+      <div class="fhead"><span class="num">1</span><h3>Rebuild the site copy around her, specifically</h3></div>
+      <p>Rewrite the homepage, the about section, and every call to action to speak directly to the woman in a long-term relationship who's lost herself and can't get through a conversation without it going sideways. Replace "Playful Coaching Session" with something that says plainly what she gets. Add real photos and video, including you and your husband, so the site finally carries your actual story instead of a template's. Add a simple Work With Me page that points to the audio series as the starting point, since that's now the front door into everything else.</p>
+      <div class="why"><strong>Why it fits you:</strong> a specific woman with a specific ache is who refers you to a friend, a stage, or a podcast host. Nobody refers "someone who helps people who feel stuck."</div>
+    </div>
+
+    <div class="fix">
+      <div class="fhead"><span class="num">2</span><h3>Build the audio series activation, priced to sell</h3></div>
+      <p>Package a focused, genuinely excellent audio series around the exact moment she's in: lost herself, can't get through a conversation, still loves him. This is the front door to your entire ecosystem, so it needs to feel like a real activation, not a throwaway freebie. Price it low enough to be an easy yes.</p>
+      <div class="why"><strong>Why it fits you:</strong> this single purchase does two jobs at once. It's income that arrives without you on a call, and it's the ticket into the community, which is where the real relationship with her begins.</div>
+    </div>
+
+    <div class="fix">
+      <div class="fhead"><span class="num">3</span><h3>Build the free community on Wix, unlocked by the audio series</h3></div>
+      <p>When she buys the audio series, she gets access to your free community. This is where podcast listeners get sent too, not to a generic website page. The free tier is the room everyone starts in.</p>
+      <div class="why"><strong>Why it fits you:</strong> your 4th line runs on relationships and community, not solo grinding. This gives you one place to build real relationship with your audience instead of scattering it across Spotify, email, and a website.</div>
+    </div>
+
+    <div class="fix">
+      <div class="fhead"><span class="num">4</span><h3>Open the paid tier once you hit 50 members</h3></div>
+      <p>At 50 free members, introduce a $33/month upgrade: monthly group coaching calls and a growing library of tools. Let the community's own needs guide what gets added to that library over time, rather than building it all up front.</p>
+      <div class="why"><strong>Why it fits you:</strong> waiting for 50 members before adding the paid tier means you're not maintaining an empty room. It also matches how you're built to work, responding to what's actually needed rather than guessing in advance.</div>
+    </div>
+
+    <div class="fix">
+      <div class="fhead"><span class="num">5</span><h3>Sell the low-ticket session inside the community, into your signature container</h3></div>
+      <p>Build the paid session, in the $44 to $57 range, as the offer you make to your warmest people, the ones already inside the community. From there it sells into your signature high-ticket container: a 1-month or 3-month offer. Name it, structure it, and price it now, since this is the destination the whole ecosystem is built to reach.</p>
+      <div class="why"><strong>Why it fits you:</strong> selling from inside a warm community, not to a cold stranger on your website, is a completely different, much easier conversation. It also fits your Projector strategy: she's already invited you in by joining and engaging, so the offer lands as recognition, not a pitch.</div>
+    </div>
+
+    <div class="fix">
+      <div class="fhead"><span class="num">6</span><h3>Retire the free 60-minute session</h3></div>
+      <p>Once the ecosystem above exists, the free hour no longer needs to be your front door. It's been quietly giving away your time to strangers and deterring the high-ticket clients you actually want. The audio series and the community now do that job better.</p>
+      <div class="why"><strong>Why it fits you:</strong> your energy is your most limited resource. This protects it for the people who've already shown they're serious, instead of spending it on the first stranger who books a call.</div>
+    </div>
+
+    <div class="fix">
+      <div class="fhead"><span class="num">7</span><h3>Rebuild the quiz around the new niche</h3></div>
+      <p>The existing quiz was built before the niche was defined, so it's being redone from the ground up rather than tweaked, questions, results pages, and printables rebuilt around the woman who's lost herself in a long-term relationship. Once it exists, it can feed directly into the audio series. This is something Claude can build directly with you.</p>
+      <div class="why"><strong>Why it fits you:</strong> the time you already put into the original quiz wasn't wasted, the structure and format can carry over. It just needs to ask the right questions for the right woman now.</div>
+    </div>
+
+    <div class="fix">
+      <div class="fhead"><span class="num">8</span><h3>Decide the podcast direction</h3></div>
+      <div class="ask"><strong>NEEDS YOUR INPUT</strong></div>
+      <p>Decide whether to relaunch "Who Says" as your own show, now built around this niche, or continue guesting on shows like Stacy's. Either path works, but it should be decided once the niche is fully settled into your copy, and every appearance from here forward needs one clear call to action: come join the community.</p>
+      <div class="why"><strong>Why it fits you:</strong> guesting is already generating organic invitations exactly as your Projector design predicts. The fix isn't the strategy, it's giving it somewhere specific to send people.</div>
+    </div>
+
+    <div class="fix">
+      <div class="fhead"><span class="num">9</span><h3>Build the email marketing engine inside Wix</h3></div>
+      <p>Use Wix's native booking, course delivery, email marketing, and automation instead of a separate CRM or Calendly. This is a build Aurailia will help you put together directly: the audio series delivery, the community invitation, and the path from free member to paid tier, all wired through one system.</p>
+      <div class="why"><strong>Why it fits you:</strong> fewer moving parts means less upkeep, and upkeep is exactly what pulls you out of your zone of genius and into daily grinding. You don't have to build this piece alone.</div>
+    </div>
+
+    <div class="quote">
+      One thing not to fix: your tone. And one thing to add deliberately: the spiritual thread. You want to stop saying "getting unstuck" and start framing this season as an invitation from the universe. That language belongs in the brand voice everywhere above, not held back for later.
+    </div>
+
+  </section>
+
+  <!-- ============ TAB 3: THE PLAN ============ -->
+  <section class="panel">
+
+    <p class="lede">Two phases. The first 90 days build the front door and the community it opens into, plus the site and tools underneath it. The next 90 grow the community to 50 members, open the paid tier, and build the path from there into your signature high-ticket container. Paced for a Projector: focused bursts, not daily grinding.</p>
+
+    <div class="phase">
+      <div class="phead">
+        <div class="plabel">MONTHS 1 TO 3</div>
+        <h3>Build the Front Door and the Community</h3>
+        <div class="goal">Goal: an audio series that sells, a free community it unlocks, and a site that finally speaks to her.</div>
+      </div>
+      <div class="month">
+        <h4>Month 1: Build the Audio Series + the Community Shell</h4>
+        <ul>
+          <li><strong>Record and package the audio series activation</strong> around the woman who's lost herself in her marriage.</li>
+          <li><strong>Set up the free community on Wix</strong> and connect it so a completed purchase unlocks access automatically.</li>
+          <li><strong>Rewrite the homepage and core copy</strong> around the confirmed niche, and replace the "Playful Coaching Session" CTA.</li>
+        </ul>
+      </div>
+      <div class="month">
+        <h4>Month 2: Wire the Funnel + Rebuild the Quiz</h4>
+        <ul>
+          <li><strong>Build the Wix-native email sequence</strong> with Aurailia's help: audio series delivery, community invitation, and welcome.</li>
+          <li><strong>Add a simple Work With Me page</strong> pointing to the audio series as the starting point.</li>
+          <li><strong>Rebuild the quiz</strong> from the ground up around the new niche, using Claude to redo the questions, results, and printables.</li>
+        </ul>
+      </div>
+      <div class="month">
+        <h4>Month 3: Send Every Path to the Community</h4>
+        <ul>
+          <li><strong>Redirect podcast appearances</strong> to point listeners to the audio series and the community, not a generic website link.</li>
+          <li><strong>Add real photos and video</strong> that carry your personal story, including you and your husband.</li>
+          <li><strong>Decide the podcast direction:</strong> relaunch "Who Says" around the niche, or continue guesting, or both.</li>
+        </ul>
+      </div>
+      <div class="milestone"><strong>90-day milestone:</strong> a working audio series that unlocks a free community, a site that speaks directly to her, a rebuilt quiz, and every podcast appearance pointing to one clear destination.</div>
+    </div>
+
+    <div class="phase">
+      <div class="phead">
+        <div class="plabel">MONTHS 4 TO 6</div>
+        <h3>Grow the Room, Then Open the Paid Tier</h3>
+        <div class="goal">Goal: 50 members, a $33/month upgrade with real value inside it, and your first sales into the signature container.</div>
+      </div>
+      <div class="month">
+        <h4>Month 4: Grow to 50</h4>
+        <ul>
+          <li><strong>Focus visibility efforts on filling the free community:</strong> podcast guesting, warm outreach, and genuine participation in a few other relationship and personal growth spaces.</li>
+          <li><strong>Show up inside the community on a sustainable rhythm,</strong> building real relationship with the members already there.</li>
+          <li><strong>Name and structure your signature high-ticket container</strong> (1-month or 3-month) so it's ready the moment the paid tier opens.</li>
+        </ul>
+      </div>
+      <div class="month">
+        <h4>Month 5: Open the Paid Tier</h4>
+        <ul>
+          <li><strong>Launch the $33/month upgrade</strong> once you hit 50 members: monthly group coaching calls plus a starting tool library.</li>
+          <li><strong>Build the low-ticket paid session</strong> ($44 to $57) as the offer for your warmest community members.</li>
+          <li><strong>Let the tool library grow based on what members actually ask for,</strong> rather than building it all up front.</li>
+        </ul>
+      </div>
+      <div class="month">
+        <h4>Month 6: Sell Into the Signature Container</h4>
+        <ul>
+          <li><strong>Begin offering the low-ticket session to engaged community members,</strong> selling from there into your 1-month or 3-month container.</li>
+          <li><strong>Review the numbers:</strong> audio series sales, free-to-paid tier conversion, session-to-container conversion.</li>
+          <li><strong>Decide on the next collaboration phase with Aurailia,</strong> whether that's continued monthly strategy support or a deeper build.</li>
+        </ul>
+      </div>
+      <div class="milestone"><strong>6-month milestone:</strong> a community that grew itself from a low-ticket offer, a paid tier earning monthly recurring revenue, and a warm, proven path from your community straight into your signature high-ticket container.</div>
+    </div>
+
+    <div class="cta">
+      <h3>Your Next Step</h3>
+      <p>[Closing CTA: Embody Wealth Skool community paragraph and link]</p>
+    </div>
+
+  </section>
+
+  <footer>
+    <span class="g">AURAILIA</span><br>
+    Tech + Frequency, Strategy + Soul
+  </footer>
+
+</div>
+
+<script>
+function show(i, btn){
+  document.querySelectorAll('.panel').forEach((p,idx)=>p.classList.toggle('active', idx===i));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0});
+}
+</script>
+</body>
+</html>
